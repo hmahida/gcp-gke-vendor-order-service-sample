@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gke-vendor-order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gke-vendor-order-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: gke-vendor-order-service
+    spec:
+      containers:
+        - name: gke-vendor-order-service
+          image: gcr.io/PROJECT_ID/IMAGE:TAG
+          volumeMounts:
+            - name: service-account-key
+              mountPath: /var/secrets/google
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
+      volumes:
+        - name: 'service-account-key'
+          secret:
+            secretName: 'google-application-credentials'
