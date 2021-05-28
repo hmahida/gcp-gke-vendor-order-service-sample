@@ -11,9 +11,10 @@ const publishData = async orderSaga => {
 };
 
 const messageHandler = message => {
-  logger.info(`Data: ${message.data}`);
-
-  const datatoPublish = message.data;
+  logger.info(`Data Received: ${message.data}`);
+  const messageReceived = Buffer.from(message.data, 'base64').toString('utf-8');
+  const parsedMessage = JSON.parse(messageReceived);
+  const datatoPublish = parsedMessage;
   datatoPublish.vendorConfimation = {
     venodrOrderId: 'gcp-eo-2323',
     status: 'InProcess',

@@ -14,7 +14,7 @@ async function publishMessage(pubSubClient, topicName, payload) {
 
 async function subscribeMessage(pubSubClient, topicName, subscriptionName, messageHandler) {
   try {
-    //const subscription = await pubSubClient.topic(topicName).createSubscription(subscriptionName);
+    // const subscription = await pubSubClient.topic(topicName).createSubscription(subscriptionName);
     const subscription = pubSubClient.subscription(subscriptionName);
     subscription.on('message', messageHandler);
   } catch (error) {
